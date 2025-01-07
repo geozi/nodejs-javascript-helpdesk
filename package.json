@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-javascript-helpdesk",
+  "version": "1.0.0",
+  "description": "Contains the backend implementation of a HelpDesk API",
+  "main": "app.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "geozi",
+  "license": "ISC"
+}
