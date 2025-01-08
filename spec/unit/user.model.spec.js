@@ -6,10 +6,12 @@ const User = require("../../src/models/user.model");
 const userValidationMessages = require("../../src/resources/userValidationMessages");
 
 describe("User model unit test:", () => {
-  const validUsername = "newUser";
-  const validEmail = "random@mail.com";
-  const validPassword = "5W]L8t1m4@PcTTO";
-  const validRole = "assistant";
+  const validInput = {
+    username: "newUser",
+    email: "random@mail.com",
+    password: "5W]L8t1m4@PcTTO",
+    role: "assistant",
+  };
 
   beforeEach(() => {
     spyOn(User.prototype, "save");
@@ -20,26 +22,15 @@ describe("User model unit test:", () => {
   });
 
   it("has valid inputs", () => {
-    const newUser = new User({
-      username: validUsername,
-      email: validEmail,
-      password: validPassword,
-      role: validRole,
-    });
-
+    const newUser = new User(validInput);
     const err = newUser.validateSync();
 
     expect(err).toBeUndefined();
   });
 
   it("has too short username", () => {
-    const newUser = new User({
-      username: "ab",
-      email: validEmail,
-      password: validPassword,
-      role: validRole,
-    });
-
+    const newUser = new User(validInput);
+    newUser.username = "ab";
     const err = newUser.validateSync();
 
     expect(err.errors.username).toBeDefined();
@@ -49,13 +40,8 @@ describe("User model unit test:", () => {
   });
 
   it("has too long username", () => {
-    const newUser = new User({
-      username: "thisIsAVeryLongUsernameToTest",
-      email: validEmail,
-      password: validPassword,
-      role: validRole,
-    });
-
+    const newUser = new User(validInput);
+    newUser.username = "thisIsAVeryLongUsernameToTest";
     const err = newUser.validateSync();
 
     expect(err.errors.username).toBeDefined();
@@ -65,56 +51,17 @@ describe("User model unit test:", () => {
   });
 
   const emailInvalidCases = [
-    [
-      "has invalid email: no prefix",
-      {
-        username: validUsername,
-        email: "@mail.com",
-        password: validPassword,
-        role: validRole,
-      },
-    ],
-    [
-      "has invalid email: no @",
-      {
-        username: validUsername,
-        email: "randommail.com",
-        password: validPassword,
-        role: validRole,
-      },
-    ],
-    [
-      "has invalid email: no domain name",
-      {
-        username: validUsername,
-        email: "random@.com",
-        password: validPassword,
-        role: validRole,
-      },
-    ],
-    [
-      "has invalid email: no .",
-      {
-        username: validUsername,
-        email: "random@mailcom",
-        password: validPassword,
-        role: validRole,
-      },
-    ],
-    [
-      "has invalid email: no top level domain",
-      {
-        username: validUsername,
-        email: "random@mail.",
-        password: validPassword,
-        role: validRole,
-      },
-    ],
+    ["has invalid email: no prefix", "@mail.com"],
+    ["has invalid email: no @", "randommail.com"],
+    ["has invalid email: no domain name", "random@.com"],
+    ["has invalid email: no .", "random@mailcom"],
+    ["has invalid email: no top level domain", "random@mail."],
   ];
 
-  emailInvalidCases.forEach(([testName, input]) => {
+  emailInvalidCases.forEach(([testName, invalidEmail]) => {
     it(testName, () => {
-      const newUser = new User(input);
+      const newUser = new User(validInput);
+      newUser.email = invalidEmail;
       const err = newUser.validateSync();
 
       expect(err.errors.email).toBeDefined();
@@ -125,13 +72,8 @@ describe("User model unit test:", () => {
   });
 
   it("has invalid role", () => {
-    const newUser = new User({
-      username: validUsername,
-      email: validEmail,
-      password: validPassword,
-      role: "retired",
-    });
-
+    const newUser = new User(validInput);
+    newUser.role = "retired";
     const err = newUser.validateSync();
 
     expect(err.errors.role).toBeDefined();
@@ -141,13 +83,9 @@ describe("User model unit test:", () => {
   });
 
   it("has invalid username and role", () => {
-    const newUser = new User({
-      username: "ab",
-      email: validEmail,
-      password: validPassword,
-      role: "retired",
-    });
-
+    const newUser = new User(validInput);
+    newUser.username = "ab";
+    newUser.role = "retired";
     const err = newUser.validateSync();
 
     expect(Object.keys(err.errors).length).toEqual(2);
