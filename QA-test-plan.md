@@ -1,6 +1,6 @@
 # HelpDesk API test plan
 
-Document version 1.0.0
+Document version 1.0.1
 
 ## Introduction
 
@@ -12,7 +12,26 @@ The project's tests are unit and integration tests. Completed tests are noted wi
 
 ### Unit tests
 
-Focus is placed on the validation rules of the Mongoose schemas. The tests include both positive and negative scenarios. In the case of the negative scenarios, the tests aim to break the validation rules and trigger specific validation messages.
+Focus is placed on the validation rules of the Mongoose schemas. The tests include both positive and negative scenarios. In the case of the negative scenarios, the tests aim to break the validation rules and trigger specific validation messages. They involve the following directories and files:
+
+```text
+└── src
+    ├── models
+    │   ├── employee.model.js
+    │   ├── ticket.model.js
+    │   └── user.model.js
+    └── resources
+        ├── employeeValidationMessages.js
+        ├── ticketValidationMessages.js
+        ├── userValidationMessages.js
+        └── validationRegExp.js
+```
+
+Tests are conducted per model:
+
+- User model [✔],
+- Employee model [✔],
+- Ticket model [✔]
 
 ### Integration tests
 
