@@ -12,6 +12,7 @@ describe("Ticket model unit test:", () => {
     status: "Pending",
     progressNote: "",
     username: "newUser",
+    ticketNumber: 0,
   };
   beforeEach(() => {
     spyOn(Ticket.prototype, "save");
@@ -81,6 +82,17 @@ describe("Ticket model unit test:", () => {
     expect(err.errors.status).toBeDefined();
     expect(err.errors.status.message).toEqual(
       ticketValidationMessages.TICKET_STATUS_INVALID
+    );
+  });
+
+  it("has negative ticket number", () => {
+    const newTicket = new Ticket(validInput);
+    newTicket.ticketNumber = -12;
+    const err = newTicket.validateSync();
+
+    expect(err.errors.ticketNumber).toBeDefined();
+    expect(err.errors.ticketNumber.message).toEqual(
+      ticketValidationMessages.TICKET_NUMBER_NEGATIVE
     );
   });
 });

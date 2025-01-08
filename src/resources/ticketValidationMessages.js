@@ -20,4 +20,6 @@ module.exports = {
   - **Complete**
   `,
   EMPLOYEE_USERNAME_REQUIRED: "Employee username is a required field",
+  TICKET_NUMBER_REQUIRED: "Ticket number is a required field",
+  TICKET_NUMBER_NEGATIVE: "Ticket number must be 0 or higher",
 };
