@@ -1,5 +1,5 @@
 /**
- * Validation rules for user registration
+ * Express validation rules for user registration
  * @module src/middleware/userValidationRules
  */
 

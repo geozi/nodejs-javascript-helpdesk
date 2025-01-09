@@ -149,7 +149,7 @@ describe("User reg. integration test", () => {
       });
     });
 
-    it("mix of undefined and null fields", async () => {
+    it("has mix of undefined and null fields", async () => {
       let validInput = { ...input };
       req = { body: validInput };
       req.body.username = undefined;
@@ -169,7 +169,7 @@ describe("User reg. integration test", () => {
       });
     });
 
-    it("request obj is undefined", async () => {
+    it("has an undefined req", async () => {
       req = undefined;
 
       try {
@@ -181,7 +181,7 @@ describe("User reg. integration test", () => {
       }
     });
 
-    it("request obj is null", async () => {
+    it("has a null req", async () => {
       req = null;
 
       try {
