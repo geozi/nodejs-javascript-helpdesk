@@ -9,7 +9,6 @@ const EMAIL_REGEX = new RegExp(
 
 const NAME_REGEX = new RegExp(/^[A-Za-z]+$/);
 
-// Regular expression for Greek zip codes
 const ZIP_CODE_REGEX = new RegExp(/^\d{5}$/);
 
 /*eslint-disable no-useless-escape*/
@@ -20,6 +19,12 @@ const PHONE_SSN_REGEX = new RegExp(/^\d+(-\d+)*$/);
 
 const EMP_TITLE_REGEX = new RegExp(/^[a-zA-Z\s-]+$/);
 
+const PASSWORD_REGEX = new RegExp(
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/
+);
+
+const ID_REGEX = new RegExp(/^[0-9a-f]{1,}$/);
+
 module.exports = {
   EMAIL_REGEX,
   NAME_REGEX,
@@ -27,4 +32,6 @@ module.exports = {
   CITY_REGEX,
   PHONE_SSN_REGEX,
   EMP_TITLE_REGEX,
+  PASSWORD_REGEX,
+  ID_REGEX,
 };
