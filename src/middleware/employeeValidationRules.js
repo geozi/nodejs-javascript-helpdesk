@@ -1,11 +1,17 @@
 /**
- * Express validation rules for employee operations
+ * Express validation rules for employee operations.
  * @module src/middleware/employeeValidationRules
  */
 
 const { check } = require("express-validator");
 const employeeValidationMessages = require("../resources/employeeValidationMessages");
+const { ID_REGEX } = require("../resources/validationRegExp");
 
+/**
+ * Returns a validation chain for employee registration.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const employeeRegistrationRules = () => {
   return [
     check("firstName")
@@ -41,4 +47,52 @@ const employeeRegistrationRules = () => {
   ];
 };
 
-module.exports = { employeeRegistrationRules };
+/**
+ * Returns a validation chain for employee info update.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeUpdateRules = () => {
+  return [
+    check("id")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(employeeValidationMessages.EMP_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(employeeValidationMessages.EMP_ID_LENGTH),
+    check("firstName").optional(),
+    check("lastName").optional(),
+    check("email").optional(),
+    check("phoneNumber").optional(),
+    check("ssn").optional(),
+    check("city").optional(),
+    check("streetAddress").optional(),
+    check("zipCode").optional(),
+    check("dept").optional(),
+    check("title").optional(),
+  ];
+};
+
+/**
+ * Returns a validation chain for employee info deletion.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeDeletionRules = () => {
+  return [
+    check("id")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(employeeValidationMessages.EMP_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(employeeValidationMessages.EMP_ID_LENGTH),
+  ];
+};
+
+module.exports = {
+  employeeRegistrationRules,
+  employeeUpdateRules,
+  employeeDeletionRules,
+};

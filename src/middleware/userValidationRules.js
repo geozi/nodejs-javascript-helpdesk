@@ -1,5 +1,5 @@
 /**
- * Express validation rules for user registration
+ * Express validation rules for user registration.
  * @module src/middleware/userValidationRules
  */
 
@@ -7,6 +7,11 @@ const { check } = require("express-validator");
 const userValidationMessages = require("../resources/userValidationMessages");
 const { PASSWORD_REGEX } = require("../resources/validationRegExp");
 
+/**
+ * Returns a validation chain for user registration.
+ * @memberof module:src/middleware/userValidationRules
+ * @returns {ValidationChain[]} - Validation chain
+ */
 const userRegistrationRules = () => {
   return [
     check("username")
