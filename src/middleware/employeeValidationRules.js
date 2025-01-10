@@ -91,8 +91,78 @@ const employeeDeletionRules = () => {
   ];
 };
 
+/**
+ * Returns a validation chain for email-based employee retrieval.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeRetrievalByEmailRules = () => {
+  return [
+    check("email")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_EMAIL_REQUIRED),
+  ];
+};
+
+/**
+ * Returns a validation chain for SSN-based employee retrieval.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeRetrievalBySSNRules = () => {
+  return [
+    check("ssn")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_SSN_REQUIRED),
+  ];
+};
+
+/**
+ * Returns a validation chain for city-based retrieval of employees.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeGroupRetrievalByCity = () => {
+  return [
+    check("city")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_CITY_REQUIRED),
+  ];
+};
+
+/**
+ * Returns a validation chain for department-based retrieval of employees.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeGroupRetrievalByDept = () => {
+  return [
+    check("dept")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_DEPT_REQUIRED),
+  ];
+};
+
+/**
+ * Returns validation chain for title-based retrieval of employees.
+ * @memberof module:src/middleware/employeeValidationRules
+ * @returns {ValidationChain[]} - Validation chain.
+ */
+const employeeGroupRetrievalByTitle = () => {
+  return [
+    check("dept")
+      .notEmpty()
+      .withMessage(employeeValidationMessages.EMP_DEPT_REQUIRED),
+  ];
+};
+
 module.exports = {
   employeeRegistrationRules,
   employeeUpdateRules,
   employeeDeletionRules,
+  employeeRetrievalByEmailRules,
+  employeeRetrievalBySSNRules,
+  employeeGroupRetrievalByCity,
+  employeeGroupRetrievalByDept,
+  employeeGroupRetrievalByTitle,
 };

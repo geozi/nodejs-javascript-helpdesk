@@ -10,7 +10,101 @@ const {
   employeeRegistrationRules,
   employeeUpdateRules,
   employeeDeletionRules,
+  employeeRetrievalByEmailRules,
+  employeeRetrievalBySSNRules,
 } = require("../middleware/employeeValidationRules");
+
+/**
+ * Middleware array that contains email-based employee retrieval logic.
+ *
+ * @memberof module:src/controllers/employee
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} employeeRetrievalByEmailRules - Express validation rules for email-based employee retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles email-based employee retrieval requests and responses.
+ */
+const retrieveEmployeeByEmail = [
+  ...employeeRetrievalByEmailRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMessage });
+    }
+
+    try {
+      const { email } = req.body;
+      const employee = await Employee.findOne({ email: email });
+
+      if (employee === null) {
+        return res
+          .status(204)
+          .json({ message: responseMessages.EMPLOYEE_NOT_FOUND });
+      }
+
+      res.status(200).json(employee);
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
+/**
+ * Middleware array that contains SSN-based employee retrieval logic.
+ *
+ * @memberof module:src/controllers/employee
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} employeeRetrievalBySSNRules - Express validation rules for ssn-based employee retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles ssn-based employee retrieval requests and responses.
+ */
+const retrieveEmployeeBySsn = [
+  ...employeeRetrievalBySSNRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMessage });
+    }
+
+    try {
+      const { ssn } = req.body;
+      const employee = await Employee.findOne({ ssn: ssn });
+
+      if (employee === null) {
+        return res
+          .status(204)
+          .json({ message: responseMessages.EMPLOYEE_NOT_FOUND });
+      }
+
+      return res.status(200).json(employee);
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
 
 /**
  * Middleware array that contains employee registration logic.
@@ -205,4 +299,10 @@ const deleteEmployeeInfo = [
   },
 ];
 
-module.exports = { registerEmployee, updateEmployeeInfo, deleteEmployeeInfo };
+module.exports = {
+  registerEmployee,
+  updateEmployeeInfo,
+  deleteEmployeeInfo,
+  retrieveEmployeeByEmail,
+  retrieveEmployeeBySsn,
+};
