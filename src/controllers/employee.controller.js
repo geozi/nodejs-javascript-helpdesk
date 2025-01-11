@@ -12,6 +12,9 @@ const {
   employeeDeletionRules,
   employeeRetrievalByEmailRules,
   employeeRetrievalBySSNRules,
+  employeeGroupRetrievalByCityRules,
+  employeeGroupRetrievalByDeptRules,
+  employeeGroupRetrievalByTitleRules,
 } = require("../middleware/employeeValidationRules");
 
 /**
@@ -91,6 +94,141 @@ const retrieveEmployeeBySsn = [
       }
 
       return res.status(200).json(employee);
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
+/**
+ * Middleware array that contains city-based employee group retrieval logic.
+ *
+ * @memberof module:src/controllers/employee
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} employeeGroupRetrievalByCityRules - Express validation rules for city-based employee-group retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles city-based employee group retrieval requests and responses.
+ */
+const retrieveEmployeesByCity = [
+  ...employeeGroupRetrievalByCityRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMessage });
+    }
+
+    try {
+      const { city } = req.body;
+      const employees = await Employee.find({ city: city });
+
+      if (employees.length === 0) {
+        return res
+          .status(204)
+          .json({ message: responseMessages.EMPLOYEE_GROUP_NOT_FOUND });
+      }
+      return res.status(200).json(employees);
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
+/**
+ * Middleware array that contains dept-based employee group retrieval logic.
+ *
+ * @memberof module:src/controllers/employee
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} employeeGroupRetrievalByDeptRules - Express validation rules for debt-based employee-group retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles debt-based employee group retrieval requests and responses.
+ */
+const retrieveEmployeesByDept = [
+  ...employeeGroupRetrievalByDeptRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMessage });
+    }
+
+    try {
+      const { dept } = req.body;
+      const employees = await Employee.find({ dept: dept });
+
+      if (employees.length === 0) {
+        return res
+          .status(204)
+          .json({ message: responseMessages.EMPLOYEE_GROUP_NOT_FOUND });
+      }
+      return res.status(200).json(employees);
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
+/**
+ * Middleware array that contains title-based employee group retrieval logic.
+ *
+ * @memberof module:src/controllers/employee
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} employeeGroupRetrievalByTitleRules - Express validation rules for title-based employee-group retrieval.
+ * @property {Function} anonymousAsyncFunction - Handles title-based employee group retrieval requests and responses.
+ */
+const retrieveEmployeesByTitle = [
+  ...employeeGroupRetrievalByTitleRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMessage });
+    }
+
+    try {
+      const { title } = req.body;
+      const employees = await Employee.find({ title: title });
+
+      if (employees.length === 0) {
+        return res
+          .status(204)
+          .json({ message: responseMessages.EMPLOYEE_GROUP_NOT_FOUND });
+      }
+      return res.status(200).json(employees);
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
@@ -305,4 +443,7 @@ module.exports = {
   deleteEmployeeInfo,
   retrieveEmployeeByEmail,
   retrieveEmployeeBySsn,
+  retrieveEmployeesByCity,
+  retrieveEmployeesByDept,
+  retrieveEmployeesByTitle,
 };

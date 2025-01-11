@@ -9,5 +9,6 @@ module.exports = {
   EMPLOYEE_REGISTERED: "Successful employee registration",
   EMPLOYEE_UPDATED: "Successful employee update",
   EMPLOYEE_NOT_FOUND: "Employee was not found",
+  EMPLOYEE_GROUP_NOT_FOUND: "No employees were found",
   INTERNAL_SERVER_ERROR: "Internal server error",
 };

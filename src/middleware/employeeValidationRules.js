@@ -122,7 +122,7 @@ const employeeRetrievalBySSNRules = () => {
  * @memberof module:src/middleware/employeeValidationRules
  * @returns {ValidationChain[]} - Validation chain.
  */
-const employeeGroupRetrievalByCity = () => {
+const employeeGroupRetrievalByCityRules = () => {
   return [
     check("city")
       .notEmpty()
@@ -135,7 +135,7 @@ const employeeGroupRetrievalByCity = () => {
  * @memberof module:src/middleware/employeeValidationRules
  * @returns {ValidationChain[]} - Validation chain.
  */
-const employeeGroupRetrievalByDept = () => {
+const employeeGroupRetrievalByDeptRules = () => {
   return [
     check("dept")
       .notEmpty()
@@ -148,11 +148,11 @@ const employeeGroupRetrievalByDept = () => {
  * @memberof module:src/middleware/employeeValidationRules
  * @returns {ValidationChain[]} - Validation chain.
  */
-const employeeGroupRetrievalByTitle = () => {
+const employeeGroupRetrievalByTitleRules = () => {
   return [
-    check("dept")
+    check("title")
       .notEmpty()
-      .withMessage(employeeValidationMessages.EMP_DEPT_REQUIRED),
+      .withMessage(employeeValidationMessages.EMP_TITLE_REQUIRED),
   ];
 };
 
@@ -162,7 +162,7 @@ module.exports = {
   employeeDeletionRules,
   employeeRetrievalByEmailRules,
   employeeRetrievalBySSNRules,
-  employeeGroupRetrievalByCity,
-  employeeGroupRetrievalByDept,
-  employeeGroupRetrievalByTitle,
+  employeeGroupRetrievalByCityRules,
+  employeeGroupRetrievalByDeptRules,
+  employeeGroupRetrievalByTitleRules,
 };
