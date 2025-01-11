@@ -18,7 +18,6 @@ const ticketValidationMessages = require("../resources/ticketValidationMessages"
  * @property {String} status - The status of the ticket.
  * @property {String} progressNote - A note placed by the assistant charged with the ticket (optional).
  * @property {String} username - The username of the employee placing the ticket.
- * @property {Number} ticketNumber - The sequence number of the ticket.
  */
 const ticketSchema = new Schema(
   {
@@ -50,16 +49,6 @@ const ticketSchema = new Schema(
     username: {
       type: String,
       required: [true, ticketValidationMessages.EMPLOYEE_USERNAME_REQUIRED],
-    },
-    ticketNumber: {
-      type: Number,
-      required: [true, ticketValidationMessages.TICKET_NUMBER_REQUIRED],
-      validate: {
-        validator: function (value) {
-          return value >= 0;
-        },
-        message: ticketValidationMessages.TICKET_NUMBER_NEGATIVE,
-      },
     },
   },
   {

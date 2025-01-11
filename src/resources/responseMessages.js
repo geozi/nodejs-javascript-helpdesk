@@ -10,5 +10,9 @@ module.exports = {
   EMPLOYEE_UPDATED: "Successful employee update",
   EMPLOYEE_NOT_FOUND: "Employee was not found",
   EMPLOYEE_GROUP_NOT_FOUND: "No employees were found",
+  TICKET_ADDED: "Successful ticket addition",
+  TICKET_UPDATED: "Successful ticket update",
+  TICKET_NOT_FOUND: "Ticket was not found",
+  TICKET_GROUP_NOT_FOUND: "No tickets were found",
   INTERNAL_SERVER_ERROR: "Internal server error",
 };

@@ -4,6 +4,9 @@
  */
 
 module.exports = {
+  TICKET_ID_REQUIRED: "Ticket ID is a required field",
+  TICKET_ID_INVALID: "Ticket ID must only contain alphanumeric characters",
+  TICKET_ID_LENGTH: "Ticket ID must be 24 characters long",
   TICKET_TITLE_REQUIRED: "Ticket title is a required field",
   TICKET_TITLE_MAX_LENGTH:
     "Ticket title must be no longer than 80 characters long",
