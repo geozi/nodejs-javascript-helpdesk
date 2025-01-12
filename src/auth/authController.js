@@ -102,7 +102,7 @@ const verifyAdminToken = [
     }
 
     try {
-      const token = req.header("Authorization");
+      const token = req.headers.authorization;
       const decoded = jwt.verify(
         token.replace("Bearer ", ""),
         process.env.ADMIN_KEY
@@ -138,7 +138,7 @@ const verifyAssistantToken = [
     }
 
     try {
-      const token = req.header("Authorization");
+      const token = req.headers.authorization;
       const decoded = jwt.verify(
         token.replace("Bearer ", ""),
         process.env.ASSISTANT_KEY
@@ -174,7 +174,7 @@ const verifyGeneralToken = [
     }
 
     try {
-      const token = req.header("Authorization");
+      const token = req.headers.authorization;
       const decoded = jwt.verify(
         token.replace("Bearer ", ""),
         process.env.GENERAL_KEY
