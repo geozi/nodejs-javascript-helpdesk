@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+  EMPLOYEE_RECORD_NOT_FOUND: "Employee record was not found",
   USERNAME_REQUIRED: "Username is a required field",
   USERNAME_MAX_LENGTH: "Username must be no longer than 20 characters",
   USERNAME_MIN_LENGTH: "Username must be at least 3 characters long",

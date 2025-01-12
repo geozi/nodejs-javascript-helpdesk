@@ -3,6 +3,7 @@
  */
 
 const User = require("../../src/models/user.model");
+const Employee = require("../../src/models/employee.model");
 const userValidationMessages = require("../../src/resources/userValidationMessages");
 
 describe("User model unit test:", () => {
@@ -15,10 +16,12 @@ describe("User model unit test:", () => {
 
   beforeEach(() => {
     spyOn(User.prototype, "save");
+    spyOn(Employee, "findOne").and.resolveTo({});
   });
 
   afterEach(() => {
     User.prototype.save.calls.reset();
+    Employee.findOne.calls.reset();
   });
 
   it("has valid inputs", () => {

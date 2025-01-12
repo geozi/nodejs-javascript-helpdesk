@@ -6,8 +6,10 @@
 const validator = require("express-validator");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const Employee = require("../models/employee.model");
 const responseMessages = require("../resources/responseMessages");
 const { userRegistrationRules } = require("../middleware/userValidationRules");
+const userValidationMessages = require("../resources/userValidationMessages");
 
 /**
  * Middleware array that contains user registration logic.
@@ -30,6 +32,14 @@ const registerUser = [
     }
     try {
       const { username, email, password, role } = req.body;
+
+      const employeeRecord = await Employee.findOne({ email: email });
+      if (employeeRecord === null) {
+        return res
+          .status(404)
+          .json({ message: userValidationMessages.EMPLOYEE_RECORD_NOT_FOUND });
+      }
+
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
         username: username,

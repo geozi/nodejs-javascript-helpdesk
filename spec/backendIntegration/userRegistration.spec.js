@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../../src/models/user.model");
+const Employee = require("../../src/models/employee.model");
 const { registerUser } = require("../../src/controllers/user.controller");
 const responseMessages = require("../../src/resources/responseMessages");
 const userValidationMessages = require("../../src/resources/userValidationMessages");
@@ -23,6 +24,7 @@ describe("User reg. integration test", () => {
     };
     next = jasmine.createSpy("next");
     User.prototype.save = jasmine.createSpy("save").and.resolveTo({});
+    Employee.findOne = jasmine.createSpy("findOne").and.resolveTo({});
     bcrypt.hash = jasmine.createSpy("hash").and.resolveTo("hashedPassword");
   });
 
@@ -31,6 +33,7 @@ describe("User reg. integration test", () => {
     res.json.calls.reset();
     next.calls.reset();
     User.prototype.save.calls.reset();
+    Employee.findOne.calls.reset();
     bcrypt.hash.calls.reset();
   });
 
