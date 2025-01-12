@@ -1,25 +1,12 @@
-const Employee = require("../../src/models/employee.model");
-const responseMessages = require("../../src/resources/responseMessages");
-const employeeValidationMessages = require("../../src/resources/employeeValidationMessages");
-const {
-  updateEmployeeInfo,
-} = require("../../src/controllers/employee.controller");
+const Ticket = require("../../src/models/ticket.model");
+const ticketValidationMessages = require("../../src/resources/ticketValidationMessages");
+const { deleteTicket } = require("../../src/controllers/ticket.controller");
 
-describe("Employee update integration test", () => {
+describe("Ticket deletion integration test", () => {
   let req, res, next;
 
   const input = {
     id: "67710722913928977aa04ea0",
-    firstName: "Grace",
-    lastName: "Clark",
-    email: "gclark2@rocketmail.com",
-    phoneNumber: "504-557-9967",
-    ssn: "278-01-1926",
-    city: "Maxwell",
-    streetAddress: "36 Spring Street",
-    zipCode: "95955",
-    dept: "Marketing",
-    title: "Product rep",
   };
 
   beforeEach(() => {
@@ -30,8 +17,8 @@ describe("Employee update integration test", () => {
       json: jasmine.createSpy("json"),
     };
     next = jasmine.createSpy("next");
-    Employee.findByIdAndUpdate = jasmine
-      .createSpy("findByIdAndUpdate")
+    Ticket.findByIdAndDelete = jasmine
+      .createSpy("findByIdAndDelete")
       .and.resolveTo({});
   });
 
@@ -39,47 +26,20 @@ describe("Employee update integration test", () => {
     res.status.calls.reset();
     res.json.calls.reset();
     next.calls.reset();
-    Employee.findByIdAndUpdate.calls.reset();
+    Ticket.findByIdAndDelete.calls.reset();
   });
 
-  describe("employee updated (201)", () => {
-    const updatedEmployeeCases = [
-      ["has only id", { id: input.id }],
-      ["has valid fields", input],
-    ];
-
-    updatedEmployeeCases.forEach(([testName, validInput]) => {
-      it(testName, async () => {
-        req = { body: validInput };
-
-        for (let middleware of updateEmployeeInfo) {
-          await middleware(req, res, next);
-        }
-
-        expect(Employee.findByIdAndUpdate.calls.count()).toEqual(1);
-        expect(res.status).toHaveBeenCalledWith(201);
-        expect(res.json).toHaveBeenCalledWith({
-          message: responseMessages.EMPLOYEE_UPDATED,
-        });
-      });
-    });
-
-    it("has some undefined and null fields", async () => {
+  describe("ticket deleted (204)", () => {
+    it("with valid id", async () => {
       let validInput = { ...input };
       req = { body: validInput };
-      req.body.lastName = undefined;
-      req.body.phoneNumber = undefined;
-      req.body.title = null;
 
-      for (let middleware of updateEmployeeInfo) {
+      for (let middleware of deleteTicket) {
         await middleware(req, res, next);
       }
 
-      expect(Employee.findByIdAndUpdate.calls.count()).toEqual(1);
-      expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith({
-        message: responseMessages.EMPLOYEE_UPDATED,
-      });
+      expect(Ticket.findByIdAndDelete.calls.count()).toEqual(1);
+      expect(res.status).toHaveBeenCalledWith(204);
     });
   });
 
@@ -95,17 +55,17 @@ describe("Employee update integration test", () => {
         req = { body: validInput };
         req.body.id = missingId;
 
-        for (let middleware of updateEmployeeInfo) {
+        for (let middleware of deleteTicket) {
           await middleware(req, res, next);
         }
 
-        expect(Employee.findByIdAndUpdate.calls.count()).toEqual(0);
+        expect(Ticket.findByIdAndDelete.calls.count()).toEqual(0);
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
           errors: [
-            { message: employeeValidationMessages.EMP_ID_REQUIRED },
-            { message: employeeValidationMessages.EMP_ID_INVALID },
-            { message: employeeValidationMessages.EMP_ID_LENGTH },
+            { message: ticketValidationMessages.TICKET_ID_REQUIRED },
+            { message: ticketValidationMessages.TICKET_ID_INVALID },
+            { message: ticketValidationMessages.TICKET_ID_LENGTH },
           ],
         });
       });
@@ -122,14 +82,14 @@ describe("Employee update integration test", () => {
         req = { body: validInput };
         req.body.id = invalidId;
 
-        for (let middleware of updateEmployeeInfo) {
+        for (let middleware of deleteTicket) {
           await middleware(req, res, next);
         }
 
-        expect(Employee.findByIdAndUpdate.calls.count()).toEqual(0);
+        expect(Ticket.findByIdAndDelete.calls.count()).toEqual(0);
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ message: employeeValidationMessages.EMP_ID_LENGTH }],
+          errors: [{ message: ticketValidationMessages.TICKET_ID_LENGTH }],
         });
       });
     });
@@ -146,14 +106,14 @@ describe("Employee update integration test", () => {
         req = { body: validInput };
         req.body.id = invalidId;
 
-        for (let middleware of updateEmployeeInfo) {
+        for (let middleware of deleteTicket) {
           await middleware(req, res, next);
         }
 
-        expect(Employee.findByIdAndUpdate.calls.count()).toEqual(0);
+        expect(Ticket.findByIdAndDelete.calls.count()).toEqual(0);
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ message: employeeValidationMessages.EMP_ID_INVALID }],
+          errors: [{ message: ticketValidationMessages.TICKET_ID_INVALID }],
         });
       });
     });
@@ -162,7 +122,7 @@ describe("Employee update integration test", () => {
       req = undefined;
 
       try {
-        for (let middleware of updateEmployeeInfo) {
+        for (let middleware of deleteTicket) {
           await middleware(req, res, next);
         }
       } catch (err) {
@@ -174,7 +134,7 @@ describe("Employee update integration test", () => {
       req = null;
 
       try {
-        for (let middleware of updateEmployeeInfo) {
+        for (let middleware of deleteTicket) {
           await middleware(req, res, next);
         }
       } catch (err) {

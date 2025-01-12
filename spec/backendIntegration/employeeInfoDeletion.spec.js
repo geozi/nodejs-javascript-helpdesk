@@ -10,6 +10,7 @@ describe("Employee info deletion integration test", () => {
   const input = {
     id: "67710722913928977aa04ea0",
   };
+
   beforeEach(() => {
     res = {
       status: jasmine.createSpy("status").and.callFake(() => {
@@ -30,7 +31,7 @@ describe("Employee info deletion integration test", () => {
     Employee.findByIdAndDelete.calls.reset();
   });
 
-  describe("delete employee info (204)", () => {
+  describe("employee info deleted (204)", () => {
     it("id is valid", async () => {
       let validInput = { ...input };
       req = { body: validInput };
@@ -119,7 +120,7 @@ describe("Employee info deletion integration test", () => {
       });
     });
 
-    it("has an undefined req", async () => {
+    it("req is undefined", async () => {
       req = undefined;
 
       try {
@@ -131,7 +132,7 @@ describe("Employee info deletion integration test", () => {
       }
     });
 
-    it("has a null req", async () => {
+    it("req is null", async () => {
       req = null;
 
       try {

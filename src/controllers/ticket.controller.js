@@ -12,6 +12,7 @@ const {
   ticketGroupRetrievalByUsernameRules,
   ticketAdditionRules,
   ticketUpdateRules,
+  ticketDeletionRules,
 } = require("../middleware/ticketValidationRules");
 
 /**
@@ -218,9 +219,58 @@ const updateTicket = [
   },
 ];
 
+/**
+ * Middleware array that contains ticket deletion logic.
+ *
+ * @memberof module:src/controllers/ticket
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} ticketDeletionRules - Express validation rules for ticket deletions.
+ * @property {Function} anonymousAsyncFunction - Handles ticket deletion requests and responses.
+ */
+const deleteTicket = [
+  ...ticketDeletionRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      console.log(errorMessage);
+      return res.status(400).json({ errors: errorMessage });
+    }
+
+    try {
+      const { id } = req.body;
+      const idAsObjectId = new mongoose.Types.ObjectId(id);
+      const deletedTicket = await Ticket.findByIdAndDelete(idAsObjectId);
+
+      if (deletedTicket === null) {
+        return res
+          .status(404)
+          .json({ message: responseMessages.TICKET_NOT_FOUND });
+      }
+
+      res.status(204).json({});
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
 module.exports = {
   retrieveTicketById,
   retrieveTicketsByUsername,
   addTicket,
   updateTicket,
+  deleteTicket,
 };

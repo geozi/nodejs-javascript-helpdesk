@@ -169,7 +169,7 @@ describe("User reg. integration test", () => {
       });
     });
 
-    it("has an undefined req", async () => {
+    it("req is undefined", async () => {
       req = undefined;
 
       try {
@@ -181,7 +181,7 @@ describe("User reg. integration test", () => {
       }
     });
 
-    it("has a null req", async () => {
+    it("req is null", async () => {
       req = null;
 
       try {
