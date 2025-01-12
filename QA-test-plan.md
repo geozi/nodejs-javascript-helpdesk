@@ -80,7 +80,28 @@ The tests are conducted per operation:
 
 #### Auth logic integration test(s)
 
-[Under development]
+In authentication-related tests, focus is placed in the auth directory and the files it contains:
+
+```test
+└── src
+    └── auth
+        ├── authController.js
+        ├── authResponseMessages.js
+        └── authValidationRules.js
+
+```
+
+The tests are executed per login outcome. Separate tests are also included for web token verification:
+
+- Successful user admin login [✔],
+- Failed user admin login [✔],
+- Successful user assistant login [⌛],
+- Failed user assistant login [⌛],
+- Successful general user login [⌛],
+- Failed general user login [⌛],
+- Web token verification for admin users [⌛],
+- Web token verification for assistant users [⌛],
+- Web token verification for general users [⌛].
 
 #### Database integration test(s)
 
