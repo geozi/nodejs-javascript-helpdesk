@@ -31,7 +31,7 @@ const registerUser = [
       return res.status(400).json({ errors: errorMessage });
     }
     try {
-      const { username, email, password, role } = req.body;
+      const { username, email, password } = req.body;
 
       const employeeRecord = await Employee.findOne({ email: email });
       if (employeeRecord === null) {
@@ -45,7 +45,7 @@ const registerUser = [
         username: username,
         email: email,
         password: hashedPassword,
-        role: role,
+        employeeId: employeeRecord._id,
       });
 
       await newUser.save();

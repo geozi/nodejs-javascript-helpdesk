@@ -4,16 +4,30 @@ const Employee = require("../../src/models/employee.model");
 const { registerUser } = require("../../src/controllers/user.controller");
 const responseMessages = require("../../src/resources/responseMessages");
 const userValidationMessages = require("../../src/resources/userValidationMessages");
+const mongoose = require("mongoose");
 
 describe("User reg. integration test", () => {
   let req, res, next;
 
   const input = {
     username: "newUser",
-    email: "myEmail@example.com",
+    email: "vcooper@random.com",
     password: "lj}6L6H$=0(UgI&",
-    role: "assistant",
   };
+
+  const userFound = new User({
+    id: new mongoose.Types.ObjectId("67853245500b80f5a7440c5d"),
+    firstName: "Victoria",
+    lastName: "Cooper",
+    email: "vcooper@random.com",
+    phoneNumber: "975-692-4131",
+    ssn: "904-50-8321",
+    city: "Burrton",
+    streetAddress: "33 Union Street",
+    zipCode: "67020",
+    title: "Software Engineer",
+    dept: "IT",
+  });
 
   beforeEach(() => {
     res = {
@@ -24,7 +38,7 @@ describe("User reg. integration test", () => {
     };
     next = jasmine.createSpy("next");
     User.prototype.save = jasmine.createSpy("save").and.resolveTo({});
-    Employee.findOne = jasmine.createSpy("findOne").and.resolveTo({});
+    Employee.findOne = jasmine.createSpy("findOne").and.resolveTo(userFound);
     bcrypt.hash = jasmine.createSpy("hash").and.resolveTo("hashedPassword");
   });
 
@@ -129,34 +143,11 @@ describe("User reg. integration test", () => {
       });
     });
 
-    const roleRequiredCases = [
-      ["role is undefined", undefined],
-      ["role is null", null],
-    ];
-
-    roleRequiredCases.forEach(([testName, missingRole]) => {
-      it(testName, async () => {
-        let validInput = { ...input };
-        req = { body: validInput };
-        req.body.role = missingRole;
-
-        for (let middleware of registerUser) {
-          await middleware(req, res, next);
-        }
-
-        expect(User.prototype.save.calls.count()).toEqual(0);
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({
-          errors: [{ message: userValidationMessages.ROLE_REQUIRED }],
-        });
-      });
-    });
-
     it("has mix of undefined and null fields", async () => {
       let validInput = { ...input };
       req = { body: validInput };
       req.body.username = undefined;
-      req.body.role = null;
+      req.body.email = null;
 
       for (let middleware of registerUser) {
         await middleware(req, res, next);
@@ -167,7 +158,7 @@ describe("User reg. integration test", () => {
       expect(res.json).toHaveBeenCalledWith({
         errors: [
           { message: userValidationMessages.USERNAME_REQUIRED },
-          { message: userValidationMessages.ROLE_REQUIRED },
+          { message: userValidationMessages.EMAIL_REQUIRED },
         ],
       });
     });

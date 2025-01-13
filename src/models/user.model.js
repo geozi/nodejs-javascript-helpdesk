@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
 const { EMAIL_REGEX } = require("../resources/validationRegExp");
 const userValidationMessages = require("../resources/userValidationMessages");
+const employeeValidationMessages = require("../resources/employeeValidationMessages");
 
 /**
  * User schema for persistence in MongoDB.
@@ -18,7 +19,7 @@ const userValidationMessages = require("../resources/userValidationMessages");
  * @property {String} username - The username of the user.
  * @property {String} email - The email of the user.
  * @property {String} password -The password of the user.
- * @property {String} role - The role of the user.
+ * @property {mongoose.Schema.Types.ObjectId} employeeId - The ID of the employee corresponding to the user profile.
  */
 const userSchema = new Schema(
   {
@@ -43,13 +44,11 @@ const userSchema = new Schema(
       required: [true, userValidationMessages.PASSWORD_REQUIRED],
       trim: true,
     },
-    role: {
-      type: String,
-      required: [true, userValidationMessages.ROLE_REQUIRED],
-      enum: {
-        values: ["admin", "assistant", "general"],
-        message: userValidationMessages.ROLE_INVALID,
-      },
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+      required: [true, employeeValidationMessages.EMP_ID_REQUIRED],
+      unique: [true, employeeValidationMessages.EMP_ID_UNIQUE],
     },
   },
   {

@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+  EMP_ID_UNIQUE: "Employee ID must be unique",
   EMP_ID_REQUIRED: "Employee ID is a required field",
   EMP_ID_INVALID: "Employee ID must only contain alphanumeric characters",
   EMP_ID_LENGTH: "Employee ID must be 24 characters long",

@@ -1,9 +1,8 @@
 /**
  * User model unit tests.
  */
-
+const mongoose = require("mongoose");
 const User = require("../../src/models/user.model");
-const Employee = require("../../src/models/employee.model");
 const userValidationMessages = require("../../src/resources/userValidationMessages");
 
 describe("User model unit test:", () => {
@@ -11,17 +10,15 @@ describe("User model unit test:", () => {
     username: "newUser",
     email: "random@mail.com",
     password: "5W]L8t1m4@PcTTO",
-    role: "assistant",
+    employeeId: new mongoose.Types.ObjectId("67852c702aff52d091714074"),
   };
 
   beforeEach(() => {
     spyOn(User.prototype, "save");
-    spyOn(Employee, "findOne").and.resolveTo({});
   });
 
   afterEach(() => {
     User.prototype.save.calls.reset();
-    Employee.findOne.calls.reset();
   });
 
   it("has valid inputs", () => {
@@ -72,33 +69,5 @@ describe("User model unit test:", () => {
         userValidationMessages.EMAIL_INVALID
       );
     });
-  });
-
-  it("has invalid role", () => {
-    const newUser = new User(validInput);
-    newUser.role = "retired";
-    const err = newUser.validateSync();
-
-    expect(err.errors.role).toBeDefined();
-    expect(err.errors.role.message).toEqual(
-      userValidationMessages.ROLE_INVALID
-    );
-  });
-
-  it("has invalid username and role", () => {
-    const newUser = new User(validInput);
-    newUser.username = "ab";
-    newUser.role = "retired";
-    const err = newUser.validateSync();
-
-    expect(Object.keys(err.errors).length).toEqual(2);
-    expect(Object.keys(err.errors).sort()).toEqual(["role", "username"]);
-    expect(err.errors.username.message).toEqual(
-      userValidationMessages.USERNAME_MIN_LENGTH
-    );
-
-    expect(err.errors.role.message).toEqual(
-      userValidationMessages.ROLE_INVALID
-    );
   });
 });

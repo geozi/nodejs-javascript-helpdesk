@@ -16,6 +16,4 @@ module.exports = {
   PASSWORD_MIN_LENGTH: "Password must be at least 7 characters long",
   PASSWORD_MUST_HAVE_CHARACTERS:
     "Password must contain at least one lowercase character, one uppercase character, one number, and one special symbol",
-  ROLE_REQUIRED: "Role is a required field",
-  ROLE_INVALID: "Role must be either admin, assistant, or general",
 };

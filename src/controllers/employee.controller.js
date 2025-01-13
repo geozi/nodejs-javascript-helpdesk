@@ -291,8 +291,12 @@ const registerEmployee = [
         title: title,
       });
 
-      await newEmployee.save();
-      res.status(201).json({ message: responseMessages.EMPLOYEE_REGISTERED });
+      const savedEmployee = await newEmployee.save();
+
+      return res.status(201).json({
+        message: responseMessages.EMPLOYEE_REGISTERED,
+        id: savedEmployee._id,
+      });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({

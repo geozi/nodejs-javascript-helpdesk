@@ -38,7 +38,7 @@ describe("Ticket update integration test", () => {
   describe("ticket updated (201)", () => {
     const updatedTicketCases = [
       ["has only id", { id: input.id }],
-      ["has valid fields", input],
+      ["has all valid fields", input],
     ];
 
     updatedTicketCases.forEach(([testName, validInput]) => {

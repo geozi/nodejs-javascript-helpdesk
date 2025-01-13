@@ -1,4 +1,5 @@
 const Employee = require("../../src/models/employee.model");
+const mongoose = require("mongoose");
 const responseMessages = require("../../src/resources/responseMessages");
 const employeeValidationMessages = require("../../src/resources/employeeValidationMessages");
 const {
@@ -29,7 +30,12 @@ describe("Employee reg. integration test", () => {
       json: jasmine.createSpy("json"),
     };
     next = jasmine.createSpy("next");
-    Employee.prototype.save = jasmine.createSpy("save").and.resolveTo({});
+    Employee.prototype.save = jasmine.createSpy("save").and.resolveTo(
+      new Employee({
+        id: new mongoose.Types.ObjectId("67855a7edf3db2f1ec90dd63"),
+        ...input,
+      })
+    );
   });
 
   afterEach(() => {
@@ -52,6 +58,7 @@ describe("Employee reg. integration test", () => {
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({
         message: responseMessages.EMPLOYEE_REGISTERED,
+        id: jasmine.any(mongoose.Types.ObjectId),
       });
     });
   });

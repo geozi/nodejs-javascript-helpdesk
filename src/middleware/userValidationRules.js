@@ -27,7 +27,6 @@ const userRegistrationRules = () => {
       .withMessage(userValidationMessages.PASSWORD_MIN_LENGTH)
       .matches(PASSWORD_REGEX)
       .withMessage(userValidationMessages.PASSWORD_MUST_HAVE_CHARACTERS),
-    check("role").notEmpty().withMessage(userValidationMessages.ROLE_REQUIRED),
   ];
 };
 
