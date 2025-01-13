@@ -101,7 +101,14 @@ The tests are executed per login outcome. Separate tests are also included for w
 
 #### Database integration test(s)
 
-[Under development]
+The integration between the backend (middleware + controllers) and the MongoDB database is the main theme for these tests. Since middleware and controller behavior has already been tested, focus will be placed on limited operations per collection.
+
+- users collection:
+  - auth processing [✔]
+- employees collection:
+  - employee processing [✔]
+- tickets collection:
+  - ticket processing [⌛]
 
 ## Out of scope
 
