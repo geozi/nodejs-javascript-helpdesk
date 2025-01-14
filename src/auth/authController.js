@@ -10,6 +10,7 @@ const responseMessages = require("../resources/responseMessages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const Role = require("../models/role.model");
 const {
   userLoginRules,
   headerValidationRules,
@@ -37,9 +38,14 @@ const loginUser = [
 
     try {
       const { username, password } = req.body;
-      const user = await User.findOne({ username: username });
 
+      const user = await User.findOne({ username: username });
       if (user === null) {
+        return res.status(401).json({ message: authMessages.AUTH_FAILED });
+      }
+
+      const role = await Role.findOne({ employeeId: user.employeeId });
+      if (role === null) {
         return res.status(401).json({ message: authMessages.AUTH_FAILED });
       }
 
@@ -49,7 +55,7 @@ const loginUser = [
       }
 
       let token;
-      switch (user.role) {
+      switch (role.role) {
         case "admin":
           token = jwt.sign({ username: username }, process.env.ADMIN_KEY, {
             expiresIn: "1h",

@@ -62,6 +62,7 @@ describe("Employee processing integration test(s)", () => {
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
       message: responseMessages.EMPLOYEE_REGISTERED,
+      id: jasmine.any(mongoose.Types.ObjectId),
     });
   });
 

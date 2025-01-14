@@ -1,6 +1,6 @@
 # HelpDesk API test plan
 
-Document version 1.0.4
+Document version 1.0.5
 
 ## Introduction
 
@@ -18,10 +18,13 @@ Focus is placed on the validation rules of the Mongoose schemas. The tests inclu
 └── src
     ├── models
     │   ├── employee.model.js
+    │   ├── role.model.js
     │   ├── ticket.model.js
     │   └── user.model.js
     └── resources
         ├── employeeValidationMessages.js
+        ├── responseMessages.js
+        ├── roleValidationMessages.js
         ├── ticketValidationMessages.js
         ├── userValidationMessages.js
         └── validationRegExp.js
@@ -31,7 +34,8 @@ Tests are conducted per model:
 
 - User model [✔],
 - Employee model [✔],
-- Ticket model [✔]
+- Ticket model [✔],
+- Role model [✔]
 
 ### Integration tests
 
@@ -43,19 +47,23 @@ The tests are meant to check the integration of backend directories and files. F
 └── src
     ├── controllers
     │   ├── employee.controller.js
+    │   ├── role.controller.js
     │   ├── ticket.controller.js
     │   └── user.controller.js
     ├── middleware
     │   ├── employeeValidationRules.js
+    │   ├── roleValidationRules.js
     │   ├── ticketValidationRules.js
     │   └── userValidationRules.js
     ├── models
     │   ├── employee.model.js
+    │   ├── role.model.js
     │   ├── ticket.model.js
     │   └── user.model.js
     └── resources
         ├── employeeValidationMessages.js
         ├── responseMessages.js
+        ├── roleValidationMessages.js
         ├── ticketValidationMessages.js
         ├── userValidationMessages.js
         └── validationRegExp.js
@@ -77,6 +85,9 @@ The tests are conducted per operation:
 - Ticket addition [✔],
 - Ticket update [✔],
 - Ticket deletion [✔]
+- Role creation [✔],
+- Role update [✔],
+- Role deletion [✔]
 
 #### Auth logic integration test(s)
 
@@ -101,14 +112,16 @@ The tests are executed per login outcome. Separate tests are also included for w
 
 #### Database integration test(s)
 
-The integration between the backend (middleware + controllers) and the MongoDB database is the main theme for these tests. Since middleware and controller behavior has already been tested, focus will be placed on limited operations per collection.
+The integration between the backend (middleware + controllers) and the MongoDB database is the main theme for these tests. Since middleware and controller behavior has already been tested to a large extend, focus will be placed on limited operations per collection.
 
-- users collection:
+- **users** collection:
   - auth processing [✔]
-- employees collection:
+- **employees** collection:
   - employee processing [✔]
-- tickets collection:
+- **tickets** collection:
   - ticket processing [⌛]
+- **roles** collection
+  - role processing [⌛]
 
 ## Out of scope
 

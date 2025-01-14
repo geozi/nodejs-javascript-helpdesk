@@ -1,9 +1,10 @@
 const User = require("../../src/models/user.model");
+const Role = require("../../src/models/role.model");
 const { loginUser } = require("../../src/auth/authController");
 const authResponses = require("../../src/auth/authResponseMessages");
 const userValidationMessages = require("../../src/resources/userValidationMessages");
 
-describe("Failed user admin integration test(s)", () => {
+describe("Failed assistant login integration test(s)", () => {
   let req, res, next;
 
   const input = {
@@ -160,6 +161,22 @@ describe("Failed user admin integration test(s)", () => {
   describe("unauthorized (401)", () => {
     it("user not found", async () => {
       User.findOne = jasmine.createSpy("findOne").and.resolveTo(null);
+
+      req = { body: input };
+
+      for (let middleware of loginUser) {
+        await middleware(req, res, next);
+      }
+
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.json).toHaveBeenCalledWith({
+        message: authResponses.AUTH_FAILED,
+      });
+    });
+
+    it("role not found", async () => {
+      User.findOne = jasmine.createSpy("findOne").and.resolveTo({});
+      Role.findOne = jasmine.createSpy("findOne").and.resolveTo(null);
 
       req = { body: input };
 
