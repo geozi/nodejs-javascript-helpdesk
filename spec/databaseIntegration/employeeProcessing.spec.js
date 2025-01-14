@@ -25,7 +25,7 @@ describe("Employee processing integration test(s)", () => {
     dept: "IT",
   };
 
-  beforeAll(async () => {
+  beforeAll(() => {
     mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
   });
 
@@ -68,10 +68,7 @@ describe("Employee processing integration test(s)", () => {
 
   it("employee updated (201)", async () => {
     const employee = new Employee(input);
-    await employee.save();
-    const employeeToUpdate = await Employee.findOne({
-      email: input.email,
-    });
+    const employeeToUpdate = await employee.save();
 
     const req = {
       body: {
@@ -92,10 +89,7 @@ describe("Employee processing integration test(s)", () => {
 
   it("employee info deleted (204)", async () => {
     const employee = new Employee(input);
-    await employee.save();
-    const employeeToDelete = await Employee.findOne({
-      email: input.email,
-    });
+    const employeeToDelete = await employee.save();
 
     const req = {
       body: {

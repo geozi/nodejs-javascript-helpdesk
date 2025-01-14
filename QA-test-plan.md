@@ -1,6 +1,6 @@
 # HelpDesk API test plan
 
-Document version 1.0.5
+Document version 1.0.6
 
 ## Introduction
 
@@ -114,14 +114,24 @@ The tests are executed per login outcome. Separate tests are also included for w
 
 The integration between the backend (middleware + controllers) and the MongoDB database is the main theme for these tests. Since middleware and controller behavior has already been tested to a large extend, focus will be placed on limited operations per collection.
 
-- **users** collection:
-  - auth processing [✔]
-- **employees** collection:
-  - employee processing [✔]
-- **tickets** collection:
-  - ticket processing [⌛]
+- **users** collection
+  - auth processing:
+    - user log in [✔]
+- **employees** collection
+  - employee processing:
+    - employee added [✔],
+    - employee info updated [✔],
+    - employee info deleted [✔]
+- **tickets** collection
+  - ticket processing:
+    - ticket added [✔],
+    - ticket updated [✔],
+    - ticket deleted [✔]
 - **roles** collection
-  - role processing [⌛]
+  - role processing:
+    - role added [✔],
+    - role updated [✔],
+    - role deleted [✔]
 
 ## Out of scope
 
