@@ -42,7 +42,7 @@ describe("Employee retrieval by ssn integration test", () => {
 
     expect(Employee.findOne.calls.count()).toEqual(1);
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(jasmine.any(Employee));
+    expect(res.json).toHaveBeenCalledWith({ data: jasmine.any(Employee) });
   });
 
   it("not found (204)", async () => {
@@ -56,7 +56,7 @@ describe("Employee retrieval by ssn integration test", () => {
     }
 
     expect(Employee.findOne.calls.count()).toEqual(1);
-    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({
       message: responseMessages.EMPLOYEE_NOT_FOUND,
     });

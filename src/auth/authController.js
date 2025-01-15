@@ -12,6 +12,11 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
 const {
+  ADMIN_GROUP,
+  ASSISTANT_GROUP,
+  GENERAL_GROUP,
+} = require("./credentialGroups");
+const {
   userLoginRules,
   headerValidationRules,
 } = require("./authValidationRules");
@@ -55,27 +60,29 @@ const loginUser = [
       }
 
       let token;
+      let payload;
       switch (role.role) {
-        case "admin":
+        case ADMIN_GROUP:
           token = jwt.sign({ username: username }, process.env.ADMIN_KEY, {
             expiresIn: "1h",
           });
+          payload = { token: token, group: ADMIN_GROUP };
           break;
-        case "assistant":
+        case ASSISTANT_GROUP:
           token = jwt.sign({ username: username }, process.env.ASSISTANT_KEY, {
             expiresIn: "1h",
           });
-
+          payload = { token: token, group: ASSISTANT_GROUP };
           break;
-        case "general":
+        case GENERAL_GROUP:
           token = jwt.sign({ username: username }, process.env.GENERAL_KEY, {
             expiresIn: "1h",
           });
-
+          payload = { token: token, group: GENERAL_GROUP };
           break;
       }
 
-      res.status(200).json({ token: token });
+      res.status(200).json(payload);
 
       /*eslint-disable no-unused-vars*/
     } catch (err) {

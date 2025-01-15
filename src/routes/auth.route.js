@@ -50,7 +50,7 @@ const { loginUser } = require("../auth/authController");
  *                         type: string
  *                         description: Error message.
  *       401:
- *         description: Authentication failure
+ *         description: Authentication failure.
  *         content:
  *           application/json:
  *             schema:
@@ -60,7 +60,7 @@ const { loginUser } = require("../auth/authController");
  *                   type: string
  *                   description: Auth failure message.
  *       200:
- *         description: Successful login
+ *         description: Successful login.
  *         content:
  *           application/json:
  *             schema:
@@ -68,9 +68,12 @@ const { loginUser } = require("../auth/authController");
  *               properties:
  *                 token:
  *                   type: string
- *                   description: JSON web token
+ *                   description: JSON web token.
+ *                 group:
+ *                   type: string
+ *                   description: Authorization category.
  *       500:
- *         description: Internal server error
+ *         description: Internal server error.
  *         content:
  *           application/json:
  *             schema:

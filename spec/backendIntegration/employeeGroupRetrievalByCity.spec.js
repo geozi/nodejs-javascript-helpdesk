@@ -41,9 +41,9 @@ describe("Employee group retrieval by city integration test", () => {
 
     expect(Employee.find.calls.count()).toEqual(1);
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(
-      jasmine.arrayContaining([jasmine.any(Employee)])
-    );
+    expect(res.json).toHaveBeenCalledWith({
+      data: jasmine.arrayContaining([jasmine.any(Employee)]),
+    });
   });
 
   it("employees not found (204)", async () => {
@@ -57,7 +57,7 @@ describe("Employee group retrieval by city integration test", () => {
     }
 
     expect(Employee.find.calls.count()).toEqual(1);
-    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({
       message: responseMessages.EMPLOYEE_GROUP_NOT_FOUND,
     });

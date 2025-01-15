@@ -1,6 +1,7 @@
 const { verifyGeneralToken } = require("../../src/auth/authController");
 const authResponses = require("../../src/auth/authResponseMessages");
 const jwt = require("jsonwebtoken");
+const { GENERAL_GROUP } = require("../../src/auth/credentialGroups");
 require("dotenv").config();
 
 describe("General JWT integration test(s)", () => {
@@ -43,6 +44,7 @@ describe("General JWT integration test(s)", () => {
       let validInput = { ...input };
       req = {
         body: validInput,
+        group: GENERAL_GROUP,
         headers: { authorization: `Bearer ${validToken}` },
       };
 
@@ -66,6 +68,7 @@ describe("General JWT integration test(s)", () => {
         let validInput = { ...input };
         req = {
           body: validInput,
+          group: GENERAL_GROUP,
           headers: { authorization: missingHeader },
         };
 
@@ -84,6 +87,7 @@ describe("General JWT integration test(s)", () => {
       let validInput = { ...input };
       req = {
         body: validInput,
+        group: GENERAL_GROUP,
         headers: { authorization: `Bearer ${invalidToken}` },
       };
 

@@ -42,7 +42,7 @@ describe("Ticket retrieval by ID integration test", () => {
 
     expect(Ticket.findById.calls.count()).toEqual(1);
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(jasmine.any(Ticket));
+    expect(res.json).toHaveBeenCalledWith({ data: jasmine.any(Ticket) });
   });
 
   it("ticket not found (404)", async () => {

@@ -45,7 +45,7 @@ const retrieveTicketById = [
           .json({ message: responseMessages.TICKET_NOT_FOUND });
       }
 
-      return res.status(200).json(ticket);
+      return res.status(200).json({ data: ticket });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
@@ -90,7 +90,7 @@ const retrieveTicketsByUsername = [
           .json({ message: responseMessages.TICKET_GROUP_NOT_FOUND });
       }
 
-      return res.status(200).json(tickets);
+      return res.status(200).json({ data: tickets });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({

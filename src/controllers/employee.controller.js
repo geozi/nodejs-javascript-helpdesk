@@ -43,11 +43,11 @@ const retrieveEmployeeByEmail = [
 
       if (employee === null) {
         return res
-          .status(204)
+          .status(404)
           .json({ message: responseMessages.EMPLOYEE_NOT_FOUND });
       }
 
-      res.status(200).json(employee);
+      res.status(200).json({ data: employee });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
@@ -89,11 +89,11 @@ const retrieveEmployeeBySsn = [
 
       if (employee === null) {
         return res
-          .status(204)
+          .status(404)
           .json({ message: responseMessages.EMPLOYEE_NOT_FOUND });
       }
 
-      return res.status(200).json(employee);
+      return res.status(200).json({ data: employee });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
@@ -135,10 +135,10 @@ const retrieveEmployeesByCity = [
 
       if (employees.length === 0) {
         return res
-          .status(204)
+          .status(404)
           .json({ message: responseMessages.EMPLOYEE_GROUP_NOT_FOUND });
       }
-      return res.status(200).json(employees);
+      return res.status(200).json({ data: employees });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
@@ -180,10 +180,10 @@ const retrieveEmployeesByDept = [
 
       if (employees.length === 0) {
         return res
-          .status(204)
+          .status(404)
           .json({ message: responseMessages.EMPLOYEE_GROUP_NOT_FOUND });
       }
-      return res.status(200).json(employees);
+      return res.status(200).json({ data: employees });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
